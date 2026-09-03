@@ -1,16 +1,53 @@
 
-estoque = {
-    "tela display oled": 10,
-    "bateria" : 12,
-    "câmera frontal": 8,
-    "câmera traseira": 9,
-    "plaça sub de carga": 7,
-    "conector de carga": 4,
-    "tampa traseira de vidro" : 10,
-    "placas": 15,
-    "botões" : 11,
-    "alto falante": 5,
-} 
+# estoque = {
+#     "tela display oled": 10,
+#     "bateria" : 12,
+#     "câmera frontal": 8,
+#     "câmera traseira": 9,
+#     "plaça sub de carga": 7,
+#     "conector de carga": 4,
+#     "tampa traseira de vidro" : 10,
+#     "placas": 15,
+#     "botões" : 11,
+#     "alto falante": 5,
+# } 
+
+estoque = [
+    {
+        'id' : 1,
+        'nome' : "BATERIA SAMSUNG",
+        'categoria' : "BATERIA",
+        'quantidade' : 14,
+        'estado' : "novo",
+        'preco' : 10.50
+        },
+    {
+        'id' : 2,
+        'nome' : "TELA SAMSUNG A32",
+        'categoria' : 'TELA',
+        'quantidade' : 3,
+        'estado' : 'usado',
+        'preco' : 280.00
+        },
+    {
+        'id' : 3,
+        'nome' : "TELA REDMI NOTE 10",
+        'categoria' : "TELA",
+        'quantidade' : 2,
+        'estado' : 'novo',
+        'preco' : 150.00
+    },
+
+    {
+        'id' : 4,
+        'nome' : "BATERIA SAMSUNG A52",
+        'categoria' : "BATERIA",
+        'quantidade' : 3,
+        'estado' : 'usado'
+
+    }
+    
+]
 
 def gerenciar_estoque_manual():
     print("\n ---- GERENCIAMENTO DE ESTOQUE ----")

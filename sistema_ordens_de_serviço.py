@@ -127,5 +127,3 @@ def finalizar_Os (exec : deque, finalizados : list, clientes : list):
 
 
 
-
-
