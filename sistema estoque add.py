@@ -1,17 +1,3 @@
-
-# estoque = {
-#     "tela display oled": 10,
-#     "bateria" : 12,
-#     "câmera frontal": 8,
-#     "câmera traseira": 9,
-#     "plaça sub de carga": 7,
-#     "conector de carga": 4,
-#     "tampa traseira de vidro" : 10,
-#     "placas": 15,
-#     "botões" : 11,
-#     "alto falante": 5,
-# } 
-
 estoque = [
     {
         'id' : 1,
@@ -40,44 +26,91 @@ estoque = [
 
     {
         'id' : 4,
-        'nome' : "BATERIA SAMSUNG A52",
-        'categoria' : "BATERIA",
-        'quantidade' : 3,
-        'estado' : 'usado'
-
-    }
-    
+        'nome' : "CONECTOR CARGA MOTO G8",
+        'categoria' : "CONECTOR",
+        'quantidade' : 15,
+        'estado' : "novo",
+        'preco' : 12.00
+    },
+    {
+         'id' : 5,
+         'nome' : "CAMERA TRASEIRA IPHONE XR",
+         'categoria' : "CAMERA",
+         'quantidade' : 8,
+         'estado' : "novo",
+         'preco' : 350.00,     
+    },
+    {
+         'id' : 6,
+         'nome' : "TAMPA TRASEIRA DE VIDRO IPHONE 11",
+         'categoria' : "CARCAÇA",
+         'quantidade' : 5,
+         'estado' : "novo",
+         'preco' : 90.00,     
+     },
+    {
+         'id' : 7,
+         'nome' : "FLEX BOTAO POWER E VOLUME A20",
+         'categoria' : "FLEX",
+         'quantidade' : 20,
+         'estado' : "usado",
+         'preco' : 15.00,     
+     },
+    {
+         'id' : 8,
+         'nome' : "BATERIA IPHONE 11",
+         'categoria' : "BATERIA",
+         'quantidade' : 9,
+         'estado' : "novo",
+         'preco' : 135.00,     
+     },    
 ]
 
 def gerenciar_estoque_manual():
+
     print("\n ---- GERENCIAMENTO DE ESTOQUE ----")
-    peca = input("nome da peça:").strip()
-    if peca not in estoque:
+
+    try:
+        id_peca = int(input("informe o ID da peça:"))
+    except ValueError:
+        print ("Erro: o ID deve ser um numero inteiro!")
+        return
+
+    peca_encontrada = None
+    for item in estoque:
+        if item['id'] ==id_peca:
+            peca_encontrada = item
+        break
+
+    if peca_encontrada is None:
         print ("Erro: peça não encontrada no estoque!")
         return
-    print(f"quantidade atual de'{peca}':{estoque[peca]}")
-    operacao = input("deseja (A)dicionar ou (R)emover peças?").strip().upper()
+
+    print(f"npeça selecionada: {peca_encontrada['nome']}")
+    print(f"Quantidade em estoque:{peca_encontrada['quantidade']}")
+
+    operacao = input("Deseja (A)dicionar ou (R)emover peças?").strip().upper()
+
     if operacao not in [ 'A', 'R']:
         print(" opção inválida!")
         return
-    
+
     try:
         quantidade = int(input("informe a quantidade:"))
         if quantidade <= 0:
             print(" A quantidadde deve ser maior que zero!")
-            return
-        
+        return
     except ValueError:
         print("entrada inválida. Digite apenas numeros inteiros.")
         return
-    if operacao == 'A':
-        estoque[peca] += quantidade
-        print(f"Adicionadas {quantidade} unidades. Novo saldo de '{peca}': {estoque[peca]}")
-    elif operacao =='R':
-        if quantidade > estoque[peca]:
-            print (f"Erro: Saldo insuficiente em estoque! Saldo atual: {estoque[peca]}")
-            return
-    estoque[peca]-= quantidade
-    print(f"removidas{quantidade} unidades. Novo saldo de '{peca}' : {estoque[peca]}") 
 
-gerenciar_estoque_manual()
+    if operacao == 'A':
+        peca_encontrada['quantidade'] += quantidade
+        print(f"Adicionadas {quantidade} unidades. Novo saldo de '{peca_encontrada['nome']}': {peca_encontrada[quantidade]}")
+    elif operacao =='R':
+         if quantidade > peca_encontrada['quantidade']:
+            print (f"Erro: Saldo insuficiente em estoque! Saldo atual: {peca_encontrada[quantidade]}")
+            return
+
+    peca_encontrada[quantidade]-= quantidade
+    print(f"removidas{quantidade} unidades. Novo saldo de '{peca_encontrada['nome']}' : {peca_encontrada[quantidade]}")
