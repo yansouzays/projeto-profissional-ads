@@ -1,6 +1,6 @@
-
+from sistema_estoque_add import gerenciar_estoque_manual
 from collections import deque
-
+from Funçoes import RegistrarClientes, RegistrarEquipamentos
 from sistema_ordens_de_serviço import abrir_OSs, mostrar_os, orcamento_Os, aprovar_Os, finalizar_Os
 
 proximo_id = 0
@@ -141,6 +141,35 @@ fila_aprovacao = deque()
 fila_execucao = deque()
 finalizados = []
 
-abrir_OSs(fila_orcamento, clientes, proximo_id)
+'''abrir_OSs(fila_orcamento, clientes, proximo_id)
 orcamento_Os(fila_orcamento, fila_aprovacao, estoque)
-aprovar_Os(fila_aprovacao, fila_execucao, finalizados)
+aprovar_Os(fila_aprovacao, fila_execucao, finalizados)'''
+
+while True:
+    print("\n1 - Registrar Cliente.")
+    print("2 - Registrar Equipamentos.")
+    print("3 - Gerenciar estoque.")
+    print("4 - Abrir Ordem de serviços.")
+    print("5 - Orçamento.")
+    print("6 - Aprovar ordem de serviços.")
+    print("7 - Sair")
+    opcao = int(input("Digite o número conforme as opções acima: "))
+
+    match opcao:
+        case 1:
+            RegistrarClientes(clientes)
+        case 2:
+            RegistrarEquipamentos(equipamentos)
+        case 3:
+            gerenciar_estoque_manual(estoque)
+        case 4:
+            abrir_OSs(fila_orcamento, clientes, proximo_id)
+        case 5:
+            orcamento_Os(fila_orcamento, fila_aprovacao, estoque)
+        case 6:
+            aprovar_Os(fila_aprovacao, fila_execucao, finalizados)
+        case 7:
+            print("SAINDO...")
+            exit()
+        case _:
+            print("Opção inválida!")
