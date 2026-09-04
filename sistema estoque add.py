@@ -114,3 +114,5 @@ def gerenciar_estoque_manual():
 
     peca_encontrada[quantidade]-= quantidade
     print(f"removidas{quantidade} unidades. Novo saldo de '{peca_encontrada['nome']}' : {peca_encontrada[quantidade]}")
+
+gerenciar_estoque_manual()
