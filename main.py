@@ -1,6 +1,78 @@
 
 from collections import deque
 
+from sistema_ordens_de_serviço import abrir_OSs, mostrar_os, orcamento_Os, aprovar_Os, finalizar_Os
+
+proximo_id = 0
+
+estoque = [
+    {
+        'id' : 1,
+        'nome' : "BATERIA SAMSUNG",
+        'categoria' : "BATERIA",
+        'quantidade' : 14,
+        'estado' : "novo",
+        'preco' : 10.50
+        },
+    {
+        'id' : 2,
+        'nome' : "TELA SAMSUNG A32",
+        'categoria' : 'TELA',
+        'quantidade' : 3,
+        'estado' : 'usado',
+        'preco' : 280.00
+        },
+    {
+        'id' : 3,
+        'nome' : "TELA REDMI NOTE 10",
+        'categoria' : "TELA",
+        'quantidade' : 2,
+        'estado' : 'novo',
+        'preco' : 150.00
+    },
+
+    {
+        'id' : 4,
+        'nome' : "CONECTOR CARGA MOTO G8",
+        'categoria' : "CONECTOR",
+        'quantidade' : 15,
+        'estado' : "novo",
+        'preco' : 12.00
+    },
+    {
+         'id' : 5,
+         'nome' : "CAMERA TRASEIRA IPHONE XR",
+         'categoria' : "CAMERA",
+         'quantidade' : 8,
+         'estado' : "novo",
+         'preco' : 350.00,     
+    },
+    {
+         'id' : 6,
+         'nome' : "TAMPA TRASEIRA DE VIDRO IPHONE 11",
+         'categoria' : "CARCAÇA",
+         'quantidade' : 5,
+         'estado' : "novo",
+         'preco' : 90.00,     
+     },
+    {
+         'id' : 7,
+         'nome' : "FLEX BOTAO POWER E VOLUME A20",
+         'categoria' : "FLEX",
+         'quantidade' : 20,
+         'estado' : "usado",
+         'preco' : 15.00,     
+     },
+    {
+         'id' : 8,
+         'nome' : "BATERIA IPHONE 11",
+         'categoria' : "BATERIA",
+         'quantidade' : 9,
+         'estado' : "novo",
+         'preco' : 135.00,     
+     },    
+]
+
 clientes = [
     {
     "id_cliente" : 1,
@@ -69,3 +141,6 @@ fila_aprovacao = deque()
 fila_execucao = deque()
 finalizados = []
 
+abrir_OSs(fila_orcamento, clientes, proximo_id)
+orcamento_Os(fila_orcamento, fila_aprovacao, estoque)
+aprovar_Os(fila_aprovacao, fila_execucao, finalizados)

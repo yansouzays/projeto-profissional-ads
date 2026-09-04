@@ -66,27 +66,27 @@ estoque = [
      },    
 ]
 
-def gerenciar_estoque_manual():
+def gerenciar_estoque_manual(estoque : list):
 
     print("\n ---- GERENCIAMENTO DE ESTOQUE ----")
 
     try:
-        id_peca = int(input("informe o ID da peça:"))
+        id_peca = int(input("informe o ID da peça: "))
     except ValueError:
         print ("Erro: o ID deve ser um numero inteiro!")
         return
 
     peca_encontrada = None
     for item in estoque:
-        if item['id'] ==id_peca:
+        if item['id'] == id_peca:
             peca_encontrada = item
-        break
+            break
 
     if peca_encontrada is None:
         print ("Erro: peça não encontrada no estoque!")
         return
 
-    print(f"npeça selecionada: {peca_encontrada['nome']}")
+    print(f"Peça selecionada: {peca_encontrada['nome']}")
     print(f"Quantidade em estoque:{peca_encontrada['quantidade']}")
 
     operacao = input("Deseja (A)dicionar ou (R)emover peças?").strip().upper()
@@ -99,20 +99,19 @@ def gerenciar_estoque_manual():
         quantidade = int(input("informe a quantidade:"))
         if quantidade <= 0:
             print(" A quantidadde deve ser maior que zero!")
-        return
+            return
     except ValueError:
         print("entrada inválida. Digite apenas numeros inteiros.")
         return
 
     if operacao == 'A':
         peca_encontrada['quantidade'] += quantidade
-        print(f"Adicionadas {quantidade} unidades. Novo saldo de '{peca_encontrada['nome']}': {peca_encontrada[quantidade]}")
+        print(f"Adicionadas {quantidade} unidades. Novo saldo de '{peca_encontrada['nome']}': {peca_encontrada['quantidade']}")
     elif operacao =='R':
-         if quantidade > peca_encontrada['quantidade']:
-            print (f"Erro: Saldo insuficiente em estoque! Saldo atual: {peca_encontrada[quantidade]}")
+        if quantidade > peca_encontrada['quantidade']:
+            print (f"Erro: Saldo insuficiente em estoque! Saldo atual: {peca_encontrada['quantidade']}")
             return
+        peca_encontrada['quantidade']-= quantidade
+        print(f"removidas{quantidade} unidades. Novo saldo de '{peca_encontrada['nome']}' : {peca_encontrada['quantidade']}")
 
-    peca_encontrada[quantidade]-= quantidade
-    print(f"removidas{quantidade} unidades. Novo saldo de '{peca_encontrada['nome']}' : {peca_encontrada[quantidade]}")
-
-gerenciar_estoque_manual()
+gerenciar_estoque_manual(estoque)
