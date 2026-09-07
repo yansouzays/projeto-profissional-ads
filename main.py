@@ -2,9 +2,16 @@ from sistema_estoque_add import gerenciar_estoque_manual
 from collections import deque
 from Funçoes import RegistrarClientes, RegistrarEquipamentos
 from sistema_ordens_de_serviço import abrir_OSs, mostrar_os, orcamento_Os, aprovar_Os, finalizar_Os
+from submenu_os import submenu_ordens
+import os
 
-proximo_id = 0
+### FILAS DO SISTEMA ###
+fila_orcamento = deque()
+fila_aprovacao = deque()
+fila_execucao = deque()
+finalizados = []
 
+### LISTAS DE DICTS DO SISTEMA ###
 estoque = [
     {
         'id' : 1,
@@ -131,20 +138,20 @@ ordensDeServicos = [
 ]
 
 tecnicos = [{
+    'id' : 2,
     'nome' : "Orretadinha",
-    'cpf'  : "77788899911",
-    'telefone' : '4002-8922'
+    'telefone' : '4002-8922',
+    'os_aberto' : 0
+},
+{   
+    'id' : 1,
+    'nome' : "Olokinho",
+    'telefone' : '4002-8922',
+    'os_aberto' : 0
 }]
 
-fila_orcamento = deque()
-fila_aprovacao = deque()
-fila_execucao = deque()
-finalizados = []
-
-'''abrir_OSs(fila_orcamento, clientes, proximo_id)
-orcamento_Os(fila_orcamento, fila_aprovacao, estoque)
-aprovar_Os(fila_aprovacao, fila_execucao, finalizados)'''
-
+### MENU PRINCIPAL ###
+proximo_id = 1
 while True:
     print("\n1 - Registrar Cliente.")
     print("2 - Registrar Equipamentos.")
@@ -163,13 +170,15 @@ while True:
         case 3:
             gerenciar_estoque_manual(estoque)
         case 4:
-            abrir_OSs(fila_orcamento, clientes, proximo_id)
+            proximo_id = abrir_OSs(fila_orcamento, clientes, proximo_id)
         case 5:
             orcamento_Os(fila_orcamento, fila_aprovacao, estoque)
         case 6:
-            aprovar_Os(fila_aprovacao, fila_execucao, finalizados)
+            aprovar_Os(fila_aprovacao, fila_execucao, finalizados, tecnicos)
         case 7:
             print("SAINDO...")
             exit()
+        case 8:
+            submenu_ordens(fila_orcamento, fila_aprovacao, fila_execucao, finalizados, tecnicos, clientes, estoque, proximo_id)
         case _:
             print("Opção inválida!")

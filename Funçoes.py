@@ -8,10 +8,6 @@ def RegistrarClientes(clientes: list):
         "cpf": cpf
     }
     clientes.append(client)
-clientes = []
-RegistrarClientes(clientes) 
-RegistrarClientes(clientes)
-print(clientes)   
 
 
 def RegistrarEquipamentos(equipamentos: list):
@@ -22,7 +18,3 @@ def RegistrarEquipamentos(equipamentos: list):
         "quantidade": quantidade 
     }
     equipamentos.append(equip)
-equipamentos = []
-RegistrarEquipamentos(equipamentos)
-RegistrarEquipamentos(equipamentos)
-print(equipamentos)

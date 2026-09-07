@@ -1,9 +1,14 @@
+import os
 from collections import deque
+import time
 
-def mostrar_os (os_atual):
+def mostrar_os (os_atual): #FUNÇÃO PARA IMPRIMIR ORDEM DE SERVIÇO DE FORMA PADRONIZADA
     print(f"\n{'-' * 10}ORDEM DE SERVIÇO Nº {os_atual['id']}{'-' * 10}")
     print(f"CLIENTE: {os_atual['nome_cliente']} - - - CPF: {os_atual['cpf_cliente']}")
-    print(f"APARELHO: {os_atual['aparelho']}")
+
+    if os_atual['tecnico'] is None:
+        os_atual['tecnico'] = "NÃO ATRIBUÍDO"
+    print(f"APARELHO: {os_atual['aparelho']} - - - TECNICO RESPONSÁVEL: {os_atual['tecnico']}")
     print(f'PROBLEMA: {os_atual['problema']} - - - ORÇAMENTO: R${os_atual['orcamento']['total']:.2f}')
     print(f"PEÇAS EM ESTOQUE: ")
     for pecas in os_atual['orcamento']['peca_estoque']:
@@ -15,7 +20,8 @@ def mostrar_os (os_atual):
     print("-" * 40, "\n")
 
 
-def abrir_OSs (list : deque, clientes : list, proximo_id):
+
+def abrir_OSs (orcamentos : deque, clientes : list, proximo_id): #FUNÇÃO PARA ABRIR ORDENS DE SERVIÇO
     print("\n" + "=" * 50)
     print("               ABERTURA DE OS")
     print("=" * 50)
@@ -23,7 +29,7 @@ def abrir_OSs (list : deque, clientes : list, proximo_id):
     print(f"\nNUMERO DA OS: Nº {proximo_id} ")
     id_os = proximo_id
 
-    while True:
+    while True: 
         print("\n" + "-" * 50)
         print("Digite o CPF do cliente")
         print("Digite [0] para cancelar")
@@ -60,13 +66,14 @@ def abrir_OSs (list : deque, clientes : list, proximo_id):
     problema = input("PROBLEMA: ").upper()
     status = "AGUARDANDO ORÇAMENTO"
 
-    os = {
+    nova_os = {
         'id' : id_os,
         'cpf_cliente' : cpf_cliente,
         'nome_cliente' : nome,
         'telefone_cliente' : telefone,
         'aparelho' : modelo_aparelho,
         'problema' : problema,
+        'tecnico' : None,
         'orcamento' : {
             'peca_estoque' : [],
             'peca_fora' : [],
@@ -76,10 +83,12 @@ def abrir_OSs (list : deque, clientes : list, proximo_id):
         'status' : status
     }
 
-    list.append(os)
-
+    orcamentos.append(nova_os)
+    print("\nORDEM DE SERVIÇO ABERTA COM SUCESSO!")
+    
     proximo_id += 1
     return proximo_id
+
 
 
 def orcamento_Os (orcamentos : deque, aprovacao : deque, estoque : list):
@@ -95,9 +104,9 @@ def orcamento_Os (orcamentos : deque, aprovacao : deque, estoque : list):
 
     mostrar_os(os_atual)
 
-    valor_estoque = 0
+    valor_total = 0
     pecas_estoque = []
-    pecas_fora = []
+    pecas_encomendadas = []
 
     while True:
         try:
@@ -106,15 +115,27 @@ def orcamento_Os (orcamentos : deque, aprovacao : deque, estoque : list):
 
             if estoque_id == 0:
                 break
+
             encontrado = False
-            for id in estoque:
-                if id['id'] == estoque_id:
-                    print(f"ID: {id['id']} - - - PEÇA: {id['nome']} - - - PREÇO UNI: R${id['preco']}")
-                    valor_estoque += id['preco']
-                    pecas_estoque.append({
-                        'nome' : id['nome'],
-                        'preco' : id['preco']})
-                    print(f'R${valor_estoque}')
+            for peca in estoque:
+                if peca['id'] == estoque_id:
+
+                    if peca['quantidade'] <= 0:
+                        print("PEÇA SEM ESTOQUE!")
+                        encontrado = True
+                        break
+                    
+                    print(f"ID: {peca['id']} - - - PEÇA: {peca['nome']} - - - PREÇO UNI: R${peca['preco']}")
+                    valor_total += peca['preco']
+                    pecas_estoque.append(
+                        {
+                        'id' : peca['id'],
+                        'nome' : peca['nome'],
+                        'preco' : peca['preco'],
+                        'quantidade' : 1
+                        })
+                    
+                    print(f'R${valor_total}')
                     encontrado = True
 
             if not encontrado:
@@ -126,12 +147,12 @@ def orcamento_Os (orcamentos : deque, aprovacao : deque, estoque : list):
         resposta = input("\nPEÇA ENCOMENDADA? [ S / N ] ").upper()
 
         if resposta == 'S':
-            nome_fora = input("NOME DA PEÇA: ")
-            valor_fora = float(input("VALOR DA PEÇA: R$"))
-            valor_estoque += valor_fora
-            pecas_fora.append({
-                    'nome' : nome_fora,
-                    'preco' : valor_fora
+            nome_encomendado = input("NOME DA PEÇA: ")
+            valor_encomendado = float(input("VALOR DA PEÇA: R$"))
+            valor_total += valor_encomendado
+            pecas_encomendadas.append({
+                    'nome' : nome_encomendado,
+                    'preco' : valor_encomendado
                 })
         elif resposta == 'N':
             break
@@ -140,10 +161,10 @@ def orcamento_Os (orcamentos : deque, aprovacao : deque, estoque : list):
 
         
     valor_mao_obra = float(input("VALOR DA MÃO DE OBRA: R$"))
-    valor_total = valor_mao_obra + valor_estoque
+    valor_total += valor_mao_obra 
     os_atual['orcamento'] = {
         'peca_estoque' : pecas_estoque,
-        'peca_fora' : pecas_fora,
+        'peca_fora' : pecas_encomendadas,
         'fixo' : valor_mao_obra,
         'total' : valor_total
 
@@ -151,7 +172,9 @@ def orcamento_Os (orcamentos : deque, aprovacao : deque, estoque : list):
     os_atual['status'] = "AGUARDANDO APROVAÇÃO"
     aprovacao.append(os_atual)
 
-def aprovar_Os (aprovacao : deque, exec : deque, final : list):
+
+
+def aprovar_Os (aprovacao : deque, exec : deque, final : list, tecnicos : list, estoque : list):
     print("\n" + "=" * 50)
     print("               APROVAR ORÇAMENTO")
     print("=" * 50)
@@ -166,10 +189,25 @@ def aprovar_Os (aprovacao : deque, exec : deque, final : list):
 
    
     while True: 
-       
         aprovar = input("APROVAR ORÇAMENTO: [ S / N ] ").upper().strip()
         if aprovar == 'S':
             print("ORÇAMENTO ACEITO")
+
+            for peca_orcamento in os_atual['orcamento']['peca_estoque']:
+                for peca in estoque:
+                    if peca['id'] == peca_orcamento[id]:
+                        peca['quantidade'] -= peca_orcamento['quantidade']
+                        break
+
+            tecnico_responsavel = tecnicos[0]
+
+            for tecnico in tecnicos:
+                if tecnico['os_aberto'] < tecnico_responsavel['os_aberto']:
+                    tecnico_responsavel = tecnico
+
+            os_atual['tecnico'] = tecnico_responsavel['nome']
+            tecnico_responsavel['os_aberto'] += 1
+
             os_atual['status'] = "ORÇAMENTO ACEITO, INDO PARA MANUNTEÇÃO"
             exec.append(os_atual)
             break
@@ -182,7 +220,9 @@ def aprovar_Os (aprovacao : deque, exec : deque, final : list):
         else:
             print("OPÇÃO INVÁLIDA! Digite S para sim ou N para Não.")
 
-def finalizar_Os (exec : deque, finalizados : list, clientes : list):
+
+
+def finalizar_Os (exec : deque, finalizados : list, clientes : list, tecnicos : list):
     try:
         os_atual = exec.popleft()
     except IndexError:
@@ -194,13 +234,75 @@ def finalizar_Os (exec : deque, finalizados : list, clientes : list):
     
     os_atual['status'] = "FINALIZADA"
 
+    for tecnico in tecnicos:
+        if tecnico['nome'] == os_atual['tecnico']:
+            tecnico['os_aberto'] -= 1
+            break
+
     finalizados.append(os_atual)
 
     for cpf in clientes:
         if cpf['cpf'] == os_atual['cpf_cliente']:
             cpf['historico'].append(os_atual)
             break
+
+def exibir_ordens(lista : deque, texto : str):
+    print("\n" + "=" * 50)
+    print(f"               {texto}")
+    print("=" * 50)
+
+    if len(lista) == 0:
+        print("\nERROR! FILA VAZIA")
+        time.sleep(1)
+        os.system('cls')
+        return
+    for ordem in lista:
+        print(f'{mostrar_os(ordem)}')
+
+    sair = input("APERTE QUALQUER E CONFIRME QUALQUER TECLA PARA VOLTAR: ")
+    if sair:
+        time.sleep(0.5)
+        os.system('cls')
+        return
+
+def buscar_os(orcamento, aprovacao, execucao, finalizada):
+    print("\n" + "=" * 50)
+    print(f"               BUSCAR ORDEM DE SERVIÇO")
+    print("=" * 50)
+
+    filas = [
+            orcamento,
+            aprovacao,
+            execucao,
+            finalizada
+        ]
+
+    while True:
+        try:
+            print("DIGITE [0] PARA VOLTAR")
+            id_os = int(input("DIGITE O ID DA ORDEM DE SERVIÇO: "))
+            break
+        except ValueError:
+            print("ERROR! Digite apenas números.")
+
+   
+
+    if id_os == 0:
+        return
+
+    for fila in filas:
+        for os_atual in fila:
+            if os_atual['id'] == id_os:
+                mostrar_os(os_atual)
+                return
+
+    print("OS NÃO ENCONTRADA")
+    return None
+
     
+
+  
+
     
 
 
