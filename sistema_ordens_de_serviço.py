@@ -6,16 +6,17 @@ def mostrar_os (os_atual): #FUNÇÃO PARA IMPRIMIR ORDEM DE SERVIÇO DE FORMA PA
     print(f"\n{'-' * 10}ORDEM DE SERVIÇO Nº {os_atual['id']}{'-' * 10}")
     print(f"CLIENTE: {os_atual['nome_cliente']} - - - CPF: {os_atual['cpf_cliente']}")
 
-    if os_atual['tecnico'] is None:
-        os_atual['tecnico'] = "NÃO ATRIBUÍDO"
-    print(f"APARELHO: {os_atual['aparelho']} - - - TECNICO RESPONSÁVEL: {os_atual['tecnico']}")
-    print(f'PROBLEMA: {os_atual['problema']} - - - ORÇAMENTO: R${os_atual['orcamento']['total']:.2f}')
+    tecnico = os_atual['tecnico']
+    if tecnico is None:
+        tecnico = "NÃO ATRIBUIDO"
+    print(f"APARELHO: {os_atual['aparelho']} - - - TECNICO RESPONSÁVEL: {tecnico}")
+    print(f"PROBLEMA: {os_atual['problema']} - - - ORÇAMENTO: R${os_atual['orcamento']['total']:.2f}")
     print(f"PEÇAS EM ESTOQUE: ")
     for pecas in os_atual['orcamento']['peca_estoque']:
         print(f" - {pecas['nome']} - - - R${pecas['preco']}")
     print("PECAS ENCOMEDADAS: ")
     for pecas in os_atual['orcamento']['peca_fora']:
-        print(f' - {pecas['nome']} - - - R${pecas['preco']}')
+        print(f" - {pecas['nome']} - - - R${pecas['preco']}")
     print(f"VALOR DA MÃO DE OBRA: R${os_atual['orcamento']['fixo']:.2f}")
     print("-" * 40, "\n")
 
@@ -38,7 +39,7 @@ def abrir_OSs (orcamentos : deque, clientes : list, proximo_id): #FUNÇÃO PARA 
         cpf_cliente = input(f"CPF: ").upper()
 
         if cpf_cliente == '0':
-            return
+            return proximo_id
         if not cpf_cliente.isdigit() or len(cpf_cliente) != 11:
             print("CPF INVÁLIDO! Digite os 11 números.")
             continue
@@ -53,7 +54,7 @@ def abrir_OSs (orcamentos : deque, clientes : list, proximo_id): #FUNÇÃO PARA 
 
     if encontrado is None:
         print("CLIENTE NÃO ENCONTRADO!")
-        return
+        return proximo_id
 
     nome = encontrado['nome']
     telefone = encontrado['telefone']
@@ -116,30 +117,31 @@ def orcamento_Os (orcamentos : deque, aprovacao : deque, estoque : list):
             if estoque_id == 0:
                 break
 
-            encontrado = False
-            for peca in estoque:
-                if peca['id'] == estoque_id:
+            peca = encontrar_peca(estoque, estoque_id)
 
-                    if peca['quantidade'] <= 0:
-                        print("PEÇA SEM ESTOQUE!")
-                        encontrado = True
-                        break
-                    
-                    print(f"ID: {peca['id']} - - - PEÇA: {peca['nome']} - - - PREÇO UNI: R${peca['preco']}")
-                    valor_total += peca['preco']
-                    pecas_estoque.append(
-                        {
-                        'id' : peca['id'],
-                        'nome' : peca['nome'],
-                        'preco' : peca['preco'],
-                        'quantidade' : 1
-                        })
-                    
-                    print(f'R${valor_total}')
-                    encontrado = True
-
-            if not encontrado:
+            if peca is None:
                 print("PRODUTO NÃO ENCONTRADO NO SISTEMA")
+                continue
+
+            if peca['quantidade'] <= 0:
+                print("SEM ESTOQUE")
+                continue
+
+            print(f"ID: {peca['id']} - - - PEÇA: {peca['nome']} - - - PREÇO UNI: R${peca['preco']}")
+
+            valor_total += peca['preco']
+
+            pecas_estoque.append(
+            {
+                'id' : peca['id'],
+                'nome' : peca['nome'],
+                'preco' : peca['preco'],
+                'quantidade' : 1
+            })
+                    
+            print(f'R${valor_total}')
+            encontrado = True
+
         except ValueError:
             print("OPÇÃO INVÁLIDA: Digite apenas números.")
 
@@ -148,7 +150,11 @@ def orcamento_Os (orcamentos : deque, aprovacao : deque, estoque : list):
 
         if resposta == 'S':
             nome_encomendado = input("NOME DA PEÇA: ")
-            valor_encomendado = float(input("VALOR DA PEÇA: R$"))
+            try:
+                valor_encomendado = float(input("VALOR DA PEÇA: R$"))
+            except ValueError:
+                print("VALOR INVÁLIDO! Digite apenas números.")
+                continue
             valor_total += valor_encomendado
             pecas_encomendadas.append({
                     'nome' : nome_encomendado,
@@ -159,8 +165,10 @@ def orcamento_Os (orcamentos : deque, aprovacao : deque, estoque : list):
         else:
             print("OPÇÃO INVÁLIDA! Digite S para sim ou N para Não.")
 
-        
-    valor_mao_obra = float(input("VALOR DA MÃO DE OBRA: R$"))
+    try:
+        valor_mao_obra = float(input("VALOR DA MÃO DE OBRA: R$"))
+    except ValueError:
+        print("VALOR INVÁLIDO! Digite apenas números.")
     valor_total += valor_mao_obra 
     os_atual['orcamento'] = {
         'peca_estoque' : pecas_estoque,
@@ -194,10 +202,10 @@ def aprovar_Os (aprovacao : deque, exec : deque, final : list, tecnicos : list, 
             print("ORÇAMENTO ACEITO")
 
             for peca_orcamento in os_atual['orcamento']['peca_estoque']:
-                for peca in estoque:
-                    if peca['id'] == peca_orcamento[id]:
-                        peca['quantidade'] -= peca_orcamento['quantidade']
-                        break
+                peca = encontrar_peca(estoque, peca_orcamento['id'])
+
+                if peca:
+                    peca['quantidade'] -= peca_orcamento['quantidade']
 
             tecnico_responsavel = tecnicos[0]
 
@@ -257,7 +265,7 @@ def exibir_ordens(lista : deque, texto : str):
         os.system('cls')
         return
     for ordem in lista:
-        print(f'{mostrar_os(ordem)}')
+        mostrar_os(ordem)
 
     sair = input("APERTE QUALQUER E CONFIRME QUALQUER TECLA PARA VOLTAR: ")
     if sair:
@@ -300,6 +308,12 @@ def buscar_os(orcamento, aprovacao, execucao, finalizada):
     return None
 
     
+def encontrar_peca(estoque, id_peca):
+    for peca in estoque:
+        if peca['id'] == id_peca:
+            return peca
+
+    return None
 
   
 

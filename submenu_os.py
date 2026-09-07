@@ -25,7 +25,7 @@ def submenu_ordens(orcamento, aprovacao, execucao, finalizados, tecnicos, client
             case 2:
                 orcamento_Os(orcamento, aprovacao, estoque)
             case 3: 
-                aprovar_Os(aprovacao, execucao, finalizados, tecnicos)
+                aprovar_Os(aprovacao, execucao, finalizados, tecnicos, estoque)
             case 4: 
                 finalizar_Os(execucao, finalizados, clientes, tecnicos)
             case 5: 
