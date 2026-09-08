@@ -1,6 +1,6 @@
 from sistema_estoque_add import gerenciar_estoque_manual
 from collections import deque
-from Funçoes import RegistrarClientes, RegistrarEquipamentos
+from Funçoes import RegistrarClientes, RegistrarEquipamentos, exibir_cliente, pesquisar_cliente, excluir_cliente, menu_clientes
 from sistema_ordens_de_serviço import abrir_OSs, mostrar_os, orcamento_Os, aprovar_Os, finalizar_Os
 from submenu_os import submenu_ordens
 import os
@@ -84,7 +84,7 @@ clientes = [
     {
     "id_cliente" : 1,
     "nome" : "Alanzoka Silva Batista",
-    "cpf" : "11122233344",
+    "CPF" : "11122233344",
     "endereco": "Londrina",
     "telefone": "7488889999",
     "historico": []
@@ -92,7 +92,7 @@ clientes = [
 {
     "id_cliente" : 1,
     "nome" : "TazerCraft Junior",
-    "cpf" : "22233344455",
+    "CPF" : "22233344455",
     "endereco": "Amsterdan",
     "telefone": "7488889999",
     "historico": []
@@ -153,7 +153,7 @@ tecnicos = [{
 ### MENU PRINCIPAL ###
 proximo_id = 1
 while True:
-    print("\n1 - Registrar Cliente.")
+    print("\n1 - Clientes.")
     print("2 - Registrar Equipamentos.")
     print("3 - Gerenciar estoque.")
     print("4 - Abrir Ordem de serviços.")
@@ -164,7 +164,7 @@ while True:
 
     match opcao:
         case 1:
-            RegistrarClientes(clientes)
+            menu_clientes(clientes)
         case 2:
             RegistrarEquipamentos(equipamentos)
         case 3:
@@ -180,5 +180,7 @@ while True:
             exit()
         case 8:
             submenu_ordens(fila_orcamento, fila_aprovacao, fila_execucao, finalizados, tecnicos, clientes, estoque, proximo_id)
+        case 9:
+            pesquisar_cliente(clientes)
         case _:
             print("Opção inválida!")
