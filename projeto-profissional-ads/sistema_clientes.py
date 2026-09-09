@@ -8,12 +8,24 @@ def registrarClientes(clientes: list):
     print("=" * 50)
 
     nome = input("Digite o nome do cliente: ").upper().strip()
-    telefone = verificar_tel()
-    if not telefone:
-        return
+
     cpf = verificar_cpf()
     if not cpf:
         return
+
+    for cliente in clientes:
+        if cliente["cpf"] == cpf:
+            print("\nErro. Já existe um cliente cadastrado com este CPF!\nTente novamente.")
+            return
+        
+    telefone = verificar_tel()
+    if not telefone:
+        return
+
+    for cliente in clientes:
+            if cliente["telefone"] == telefone:
+                print("\nErro. Já existe um cliente cadastrado com este telefone!\nTente novamente.")
+                return
     
     client = {
         "nome": nome,
@@ -21,6 +33,7 @@ def registrarClientes(clientes: list):
         "cpf": cpf
     }
     clientes.append(client)
+    print("\nCliente cadastrado com sucesso!")
 
 def exibir_cliente(clientes):
     print("\n" + "=" * 50)

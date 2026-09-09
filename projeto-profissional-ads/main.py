@@ -87,14 +87,14 @@ clientes = [
     "id_cliente" : 1,
     "nome" : "Alanzoka Silva Batista",
     "cpf" : "11122233344",
-    "telefone": "7488889999",
+    "telefone": "74888899999",
     "historico": []
 },
 {
     "id_cliente" : 1,
     "nome" : "TazerCraft Junior",
     "cpf" : "22233344455",
-    "telefone": "7488889999",
+    "telefone": "74888889999",
     "historico": []
 }
 ]
