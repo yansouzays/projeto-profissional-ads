@@ -1,9 +1,11 @@
-from sistema_estoque_add import gerenciar_estoque_manual
-from collections import deque
-from Funçoes import RegistrarClientes, RegistrarEquipamentos, exibir_cliente, pesquisar_cliente, excluir_cliente, menu_clientes
+from sistema_clientes import registrarClientes, RegistrarEquipamentos, exibir_cliente, pesquisar_cliente, excluir_cliente, menu_clientes
 from sistema_ordens_de_serviço import abrir_OSs, mostrar_os, orcamento_Os, aprovar_Os, finalizar_Os
+from sistema_estoque_add import gerenciar_estoque_manual, cadastrar_peca, listar_pecas, pesquisar_peca, remover_peca, menu_estoque
 from submenu_os import submenu_ordens
+
+from collections import deque
 import os
+from funcoes_coringas import verificar_cpf
 
 ### FILAS DO SISTEMA ###
 fila_orcamento = deque()
@@ -84,16 +86,14 @@ clientes = [
     {
     "id_cliente" : 1,
     "nome" : "Alanzoka Silva Batista",
-    "CPF" : "11122233344",
-    "endereco": "Londrina",
+    "cpf" : "11122233344",
     "telefone": "7488889999",
     "historico": []
 },
 {
     "id_cliente" : 1,
     "nome" : "TazerCraft Junior",
-    "CPF" : "22233344455",
-    "endereco": "Amsterdan",
+    "cpf" : "22233344455",
     "telefone": "7488889999",
     "historico": []
 }
@@ -116,27 +116,6 @@ equipamentos = [
 }
 ]
 
-ordensDeServicos = [
-        {
-    'numero_os' : 1,
-    'cliente_cpf' : "11122233344",
-    'aparelho' : "Notebook Dell, Inspiron 15",
-    'descricao' : "Notebook com defeito no teclado",
-    'entrada' : 27092026,
-    'prazo_maximo' : "30 dias úteis",
-    'valor_estimulado': 250.00
-    },
- {
-    'numero_os' : 2,
-    'cliente_cpf' : "22233344455",
-    'aparelho' : "Celular Samsung A14",
-    'descricao' : "Celular não liga",
-    'entrada' : 28092026,
-    'prazo_maximo' : "30 dias úteis",
-    'valor_estimulado': 250.00
-    }    
-]
-
 tecnicos = [{
     'id' : 2,
     'nome' : "Orretadinha",
@@ -152,35 +131,31 @@ tecnicos = [{
 
 ### MENU PRINCIPAL ###
 proximo_id = 1
-while True:
-    print("\n1 - Clientes.")
-    print("2 - Registrar Equipamentos.")
-    print("3 - Gerenciar estoque.")
-    print("4 - Abrir Ordem de serviços.")
-    print("5 - Orçamento.")
-    print("6 - Aprovar ordem de serviços.")
-    print("7 - Sair")
-    opcao = int(input("Digite o número conforme as opções acima: "))
 
-    match opcao:
-        case 1:
-            menu_clientes(clientes)
-        case 2:
-            RegistrarEquipamentos(equipamentos)
-        case 3:
-            gerenciar_estoque_manual(estoque)
-        case 4:
-            proximo_id = abrir_OSs(fila_orcamento, clientes, proximo_id)
-        case 5:
-            orcamento_Os(fila_orcamento, fila_aprovacao, estoque)
-        case 6:
-            aprovar_Os(fila_aprovacao, fila_execucao, finalizados, tecnicos)
-        case 7:
-            print("SAINDO...")
-            exit()
-        case 8:
-            submenu_ordens(fila_orcamento, fila_aprovacao, fila_execucao, finalizados, tecnicos, clientes, estoque, proximo_id)
-        case 9:
-            pesquisar_cliente(clientes)
-        case _:
-            print("Opção inválida!")
+def main():
+    while True:
+        print("\n" + "=" * 50)
+        print("       SISTEMA PARA ASSISTÊNCIA TÉCNINCA")
+        print("=" * 50)
+
+        print("""[1] - SETOR CLIENTES -
+[2] - ESTOQUE -
+[3] - ORDENS DE SERVIÇOS -
+
+[0] FECHAR """)
+        opcao = input("Digite o número conforme as opções acima: ")
+
+        match opcao:
+            case '1':
+                menu_clientes(clientes)
+            case '2':
+                menu_estoque(estoque)
+            case '3':
+                submenu_ordens(fila_orcamento, fila_aprovacao, fila_execucao, finalizados, tecnicos, clientes, estoque, proximo_id)
+            case '0':
+                break
+            case _:
+                print("ERROR! Digite um número de 0 e 3.")
+
+if __name__ == "__main__":
+    main()

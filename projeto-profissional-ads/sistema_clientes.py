@@ -1,15 +1,32 @@
-def RegistrarClientes(clientes: list):
+import os
+from funcoes_coringas import verificar_cpf, verificar_tel
+
+
+def registrarClientes(clientes: list):
+    print("\n" + "=" * 50)
+    print("       CADASTRAR CLIENTES")
+    print("=" * 50)
+
     nome = input("Digite o nome do cliente: ").upper().strip()
-    telefone = input("Digite o telefone do cliente: ")
-    cpf = input("Digite o cpf do cliente: ").strip()
+    telefone = verificar_tel()
+    if not telefone:
+        return
+    cpf = verificar_cpf()
+    if not cpf:
+        return
+    
     client = {
         "nome": nome,
         "telefone": telefone,
-        "CPF": cpf
+        "cpf": cpf
     }
     clientes.append(client)
 
 def exibir_cliente(clientes):
+    print("\n" + "=" * 50)
+    print("       CLIENTES CADASTRADOS")
+    print("=" * 50)
+
     if not clientes:
         print("Nenhum cliente cadastrado até o momento!")
     else:
@@ -17,28 +34,38 @@ def exibir_cliente(clientes):
         for cliente in clientes:
             print(f"Nome: {cliente['nome']}")
             print(f"Telefone: {cliente['telefone']}")
-            print(f"CPF: {cliente['CPF']}")
+            print(f"CPF: {cliente['cpf']}")
             print("-" * 25)
 
 def pesquisar_cliente(clientes):
-    encontrado = input("Digite o CPF do cliente que deseja encontrar: ")
+    print("\n" + "=" * 50)
+    print("       PESQUISAR CLIENTES")
+    print("=" * 50)
+
+    cpf_cliente = verificar_cpf()
+    if not cpf_cliente:
+        return
+
     achou = False
     for cliente in clientes:
-        if cliente["CPF"] == encontrado:
+        if cliente["cpf"] == cpf_cliente:
             achou = True
             print("\n--- RESULTADO ---\n")
             print(f"Nome: {cliente['nome']}")
             print(f"Telefone: {cliente['telefone']}")
-            print(f"CPF: {cliente['CPF']}")
+            print(f"CPF: {cliente['cpf']}")
             break
     if not achou:
         print("Cliente não encontrado!")
 
 def excluir_cliente(clientes):
-    encontrado = input("Digite o CPF do cliente que deseja encontrar: ")
+    cpf_cliente = verificar_cpf()
+    if not cpf_cliente:
+        return
+
     removido = False
     for cliente in clientes:
-        if cliente["CPF"] == encontrado:
+        if cliente["cpf"] == cpf_cliente:
             clientes.remove(cliente)
             removido = True
             print("Removido!")
@@ -57,26 +84,29 @@ def RegistrarEquipamentos(equipamentos: list):
 
 def menu_clientes(clientes: list):
     while True:
+        print("\n" + "=" * 50)
+        print("           SETOR CLIENTES")
+        print("=" * 50)
 
-        print("\n1 - Registrar Cliente.")
-        print("2 - Exibir lista de clientes.")
-        print("3 - Pesquisar cliente.")
-        print("4 - Remover cliente.")
-        print("5 - Sair.")
-        
+        print("""[1] REGISTRAR CLIENTE - - - [2] EXIBIR CLIENTES
+[3] PESQUISAR CLIENTE - - - [4] REMOVER CLIENTES
+
+[0] VOLTAR""")
+
         opcao_clientes = int(input("Digite a opção: "))
 
         match opcao_clientes:
 
             case 1:
-                RegistrarClientes(clientes)
+                registrarClientes(clientes)
             case 2:
                 exibir_cliente(clientes)
             case 3:
                 pesquisar_cliente(clientes)
             case 4:
                 excluir_cliente(clientes)
-            case 5:
-                break
+            case 0:
+                os.system('cls')
+                return
             case _:
-                print("ERROR! Digite uma opção válida")
+                print("ERROR! Digite uma opção entre 0 e 4.")

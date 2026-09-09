@@ -1,5 +1,6 @@
 import os
 from collections import deque
+from funcoes_coringas import verificar_cpf
 import time
 
 def mostrar_os (os_atual): #FUNÇÃO PARA IMPRIMIR ORDEM DE SERVIÇO DE FORMA PADRONIZADA
@@ -18,6 +19,7 @@ def mostrar_os (os_atual): #FUNÇÃO PARA IMPRIMIR ORDEM DE SERVIÇO DE FORMA PA
     for pecas in os_atual['orcamento']['peca_fora']:
         print(f" - {pecas['nome']} - - - R${pecas['preco']}")
     print(f"VALOR DA MÃO DE OBRA: R${os_atual['orcamento']['fixo']:.2f}")
+    print(f"STATUS: {os_atual['status']}")
     print("-" * 40, "\n")
 
 
@@ -30,21 +32,9 @@ def abrir_OSs (orcamentos : deque, clientes : list, proximo_id): #FUNÇÃO PARA 
     print(f"\nNUMERO DA OS: Nº {proximo_id} ")
     id_os = proximo_id
 
-    while True: 
-        print("\n" + "-" * 50)
-        print("Digite o CPF do cliente")
-        print("Digite [0] para cancelar")
-        print("-" * 50)
-
-        cpf_cliente = input(f"CPF: ").upper()
-
-        if cpf_cliente == '0':
-            return proximo_id
-        if not cpf_cliente.isdigit() or len(cpf_cliente) != 11:
-            print("CPF INVÁLIDO! Digite os 11 números.")
-            continue
-       
-        break
+    cpf_cliente = verificar_cpf()
+    if not cpf_cliente:
+        return
         
     encontrado = None
     for cliente in clientes:

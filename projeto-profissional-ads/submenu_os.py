@@ -1,8 +1,10 @@
 from sistema_ordens_de_serviço import abrir_OSs, mostrar_os, orcamento_Os, aprovar_Os, finalizar_Os, exibir_ordens, buscar_os
+from sistema_clientes import registrarClientes, exibir_cliente, pesquisar_cliente, excluir_cliente 
 import os
 from collections import deque
 
 def submenu_ordens(orcamento, aprovacao, execucao, finalizados, tecnicos, clientes, estoque, id_os):
+
     while True:
         print("\n" + "=" * 50)
         print("               ORDENS DE SERVIÇO")
@@ -42,8 +44,7 @@ def submenu_ordens(orcamento, aprovacao, execucao, finalizados, tecnicos, client
                 os.system('cls')
                 return
             case _:
-                print("ERROR! Digite uma opção válida")
-
+                print("ERROR! Digite um número entre 0 e 9.")
 
 
 
