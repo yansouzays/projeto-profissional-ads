@@ -9,10 +9,110 @@ import os
 from funcoes_coringas import verificar_cpf
 
 ### FILAS DO SISTEMA ###
-fila_orcamento = deque()
-fila_aprovacao = deque()
-fila_execucao = deque()
-finalizados = []
+fila_orcamento = deque([{
+    "id": 5,
+    "cpf_cliente": "11122233344",
+    "nome_cliente": "JOAO DA SILVA",
+    "telefone_cliente": "74999990001",
+    "aparelho": "IPHONE 11",
+    "problema": "TELA QUEBRADA",
+    "tecnico": "PEDRO ALMEIDA",
+    "orcamento": {
+        "peca_estoque": [],
+        "peca_fora": [],
+        "fixo": 0,
+        "total": 0
+    },
+    "status": "ORCAMENTO"
+}])
+fila_aprovacao = deque([
+    {
+        "id": 4,
+        "cpf_cliente": "22233344455",
+        "nome_cliente": "MARIA OLIVEIRA",
+        "telefone_cliente": "74999990002",
+        "aparelho": "SAMSUNG GALAXY A54",
+        "problema": "NAO LIGA",
+        "tecnico": "LUCAS MENDES",
+        "orcamento": {
+            "peca_estoque": [
+                {
+                    "id": 1,
+                    "nome": "BATERIA GALAXY A54",
+                    "quantidade": 1,
+                    "preco": 180
+                }
+            ],
+            "peca_fora": [],
+            "fixo": 50,
+            "total": 230
+        },
+        "status": "APROVACAO"
+    }
+])
+fila_execucao = deque([
+    {
+        "id": 3,
+        "cpf_cliente": "33344455566",
+        "nome_cliente": "CARLOS SANTOS",
+        "telefone_cliente": "74999990003",
+        "aparelho": "NOTEBOOK DELL INSPIRON",
+        "problema": "NAO INICIA O WINDOWS",
+        "tecnico": "PEDRO ALMEIDA",
+        "orcamento": {
+            "peca_estoque": [],
+            "peca_fora": [],
+            "fixo": 120,
+            "total": 120
+        },
+        "status": "EXECUCAO"
+    }
+])
+finalizados = [{
+        "id": 1,
+        "cpf_cliente": "11122233344",
+        "nome_cliente": "JOAO DA SILVA",
+        "telefone_cliente": "74999990001",
+        "aparelho": "MOTOROLA G84",
+        "problema": "CONECTOR DE CARGA DANIFICADO",
+        "tecnico": "PEDRO ALMEIDA",
+        "orcamento": {
+            "peca_estoque": [
+                {
+                    "id": 2,
+                    "nome": "CONECTOR DE CARGA MOTOROLA G84",
+                    "quantidade": 1,
+                    "preco": 90
+                }
+            ],
+            "peca_fora": [],
+            "fixo": 60,
+            "total": 150
+        },
+        "status": "FINALIZADA"
+    },
+    {
+        "id": 2,
+        "cpf_cliente": "33344455566",
+        "nome_cliente": "CARLOS SANTOS",
+        "telefone_cliente": "74999990003",
+        "aparelho": "PLAYSTATION 4",
+        "problema": "SUPERAQUECIMENTO",
+        "tecnico": "LUCAS MENDES",
+        "orcamento": {
+            "peca_estoque": [],
+            "peca_fora": [
+                {
+                    "nome": "PASTA TERMICA",
+                    "quantidade": 1,
+                    "preco": 45
+                }
+            ],
+            "fixo": 100,
+            "total": 145
+        },
+        "status": "FINALIZADA"
+    }]
 
 ### LISTAS DE DICTS DO SISTEMA ###
 estoque = [
@@ -85,38 +185,50 @@ estoque = [
 
 clientes = [
     {
-    "nome" : "Alanzoka Silva Batista",
-    "cpf" : "11122233344",
-    "telefone": "74888899999",
-    "historico": []
-},
-{
-    "nome" : "TazerCraft Junior",
-    "cpf" : "22233344455",
-    "telefone": "74888889999",
-    "historico": []
-}
+        "nome": "JOAO DA SILVA",
+        "telefone": "74999990001",
+        "cpf": "11122233344",
+        "historico": [1, 4]
+    },
+    {
+        "nome": "MARIA OLIVEIRA",
+        "telefone": "74999990002",
+        "cpf": "22233344455",
+        "historico": [2]
+    },
+    {
+        "nome": "CARLOS SANTOS",
+        "telefone": "74999990003",
+        "cpf": "33344455566",
+        "historico": [3, 5]
+    },
+    {
+        "nome": "ANA SOUZA",
+        "telefone": "74999990004",
+        "cpf": "44455566677",
+        "historico": []
+    }
 ]
 
 tecnicos = [{
-    'id' : 2,
-    'nome' : "Orretadinha",
-    'telefone' : '4002-8922',
-    'os_aberto' : 0,
-    'os_finalizada' : 0,
-    'historico' : []
-},
-{   
-    'id' : 1,
-    'nome' : "Olokinho",
-    'telefone' : '4002-8922',
-    'os_aberto' : 0,
-    'os_finalizada' : 0,
-    'historico' : []
-}]
+        "id": 1,
+        "nome": "PEDRO ALMEIDA",
+        "telefone": "74988880001",
+        "os_aberto": 1,
+        "os_finalizada": 2,
+        "historico": [1, 3, 4]
+    },
+    {
+        "id": 2,
+        "nome": "LUCAS MENDES",
+        "telefone": "74988880002",
+        "os_aberto": 1,
+        "os_finalizada": 1,
+        "historico": [2, 5]
+    }]
 
 ### MENU PRINCIPAL ###
-proximo_id = 1
+proximo_id = 6
 
 def main():
     while True:
@@ -125,7 +237,7 @@ def main():
         print("=" * 50)
 
         print("""[1] - SETOR CLIENTES - - - [2] - ESTOQUE 
-[3] - ORDENS DE SERVIÇOS - - - [4] - TÉCNICOS
+[3] - ORDENS DE SERVIÇOS   - - -  [4] - TÉCNICOS
 
 [0] FECHAR """)
         opcao = input("Digite o número conforme as opções acima: ")

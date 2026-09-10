@@ -305,6 +305,38 @@ def buscar_os(orcamento, aprovacao, execucao, finalizada):
     print("OS NÃO ENCONTRADA")
     return None
 
+def filtrar_ordem(orcamento, aprovacao, execucao, finalizada):
+    lista = [
+        orcamento,
+        aprovacao,
+        execucao,
+        finalizada
+    ]
+
+    while True:
+        print("""FILTRAR POR:
+    [1] - AGUARDANDO ORÇAMENTOS - - - [2] - AGUARDANDO APROVAÇÃO
+    [3] - EM EXECUÇÃO       - - -     [4] - FINALIZADAS 
+    
+    [0] - VOLTAR""")
+        opcao = input("Opção desejada: ")
+
+        match opcao:
+            case '1':
+                exibir_ordens(orcamento, "AGUARDANDO ORÇAMENTO")
+            case '2':
+                exibir_ordens(aprovacao, "AGUARDANDO APROVAÇÃO")
+            case '3':
+                exibir_ordens(execucao, "EM EXECUÇÃO")
+            case '4':
+                exibir_ordens(finalizada, "FINALIZADAS")
+            case '0':
+                time.sleep(0.5)
+                os.system('cls')
+                return
+            case _:
+                print("ERROR! Digite um número entre 0 e 4.")
+
     
 def encontrar_peca(estoque, id_peca):
     for peca in estoque:

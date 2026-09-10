@@ -1,4 +1,4 @@
-from sistema_ordens_de_serviço import abrir_OSs, mostrar_os, orcamento_Os, aprovar_Os, finalizar_Os, exibir_ordens, buscar_os
+from sistema_ordens_de_serviço import abrir_OSs, mostrar_os, orcamento_Os, aprovar_Os, finalizar_Os, exibir_ordens, buscar_os, filtrar_ordem
 from sistema_clientes import registrarClientes, exibir_cliente, pesquisar_cliente, excluir_cliente 
 import os
 from collections import deque
@@ -10,9 +10,8 @@ def submenu_ordens(orcamento, aprovacao, execucao, finalizados, tecnicos, client
         print("               ORDENS DE SERVIÇO")
         print("=" * 50)
 
-        print("""\n[1] ABRIR OS - - - [2] ORÇAMENTOS - - - [3] APROVAR
-[4] FINALIZAR OS - - - [5] AGUARDANDO ORÇAMENTOS - - - [6] AGUARDADO APROVAÇÃO
-[7] ORDENS EM ANDAMENTO - - - [8] OS's FINALIZADAS - - - [9] BUSCAR ORDEM DE SERVIÇO
+        print("""\n[1] - ABRIR OS - - - [2] - ORÇAMENTOS - - - [3] - APROVAR
+[4] - FINALIZAR OS - - - [5] ORDENS DE SERVIÇOS - - - [9] - BUSCAR ORDEM DE SERVIÇO
 
 [0] SAIR""")
 
@@ -31,14 +30,8 @@ def submenu_ordens(orcamento, aprovacao, execucao, finalizados, tecnicos, client
             case 4: 
                 finalizar_Os(execucao, finalizados, clientes, tecnicos)
             case 5: 
-                exibir_ordens(orcamento, "AGUARDANDO ORÇAMENTO")
+                filtrar_ordem(orcamento, aprovacao, execucao, finalizados)
             case 6:
-                exibir_ordens(aprovacao, "AGUARDANDO APROVACAO")
-            case 7:
-                exibir_ordens(execucao, "ORDENS EM ANDAMENTO")
-            case 8:
-                exibir_ordens(finalizados, "ORDENS FINALIZADAS")
-            case 9:
                 buscar_os(orcamento, aprovacao, execucao, finalizados)
             case 0:
                 os.system('cls')
