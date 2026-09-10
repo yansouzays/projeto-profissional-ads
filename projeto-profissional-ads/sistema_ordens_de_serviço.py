@@ -229,20 +229,28 @@ def finalizar_Os (exec : deque, finalizados : list, clientes : list, tecnicos : 
 
     mostrar_os(os_atual)
 
-    
-    os_atual['status'] = "FINALIZADA"
+    confirmar = input("FINALIZAR ORDEM DE SERVIÇO? [ S / N ] ").upper().strip()
+    if confirmar == 'N':
+        return
+    elif confirmar == 'S': 
+        os_atual['status'] = "FINALIZADA"
 
-    for tecnico in tecnicos:
-        if tecnico['nome'] == os_atual['tecnico']:
-            tecnico['os_aberto'] -= 1
-            break
+        for tecnico in tecnicos:
+            if tecnico['nome'] == os_atual['tecnico']:
+                tecnico['os_aberto'] -= 1
+                tecnico['os_finalizada'] += 1
+                tecnico['historico'].append(os_atual['id'])
+                break
 
-    finalizados.append(os_atual)
+        finalizados.append(os_atual)
 
-    for cpf in clientes:
-        if cpf['cpf'] == os_atual['cpf_cliente']:
-            cpf['historico'].append(os_atual)
-            break
+        for cpf in clientes:
+            if cpf['cpf'] == os_atual['cpf_cliente']:
+                cpf['historico'].append(os_atual)
+                break
+    else:
+        print("ERROR! Escoha uma opção válida ( S ou N )")
+        return
 
 def exibir_ordens(lista : deque, texto : str):
     print("\n" + "=" * 50)
@@ -254,14 +262,14 @@ def exibir_ordens(lista : deque, texto : str):
         time.sleep(1)
         os.system('cls')
         return
+    
     for ordem in lista:
         mostrar_os(ordem)
 
     sair = input("APERTE QUALQUER E CONFIRME QUALQUER TECLA PARA VOLTAR: ")
-    if sair:
-        time.sleep(0.5)
-        os.system('cls')
-        return
+    time.sleep(0.5)
+    os.system('cls')
+    return
 
 def buscar_os(orcamento, aprovacao, execucao, finalizada):
     print("\n" + "=" * 50)

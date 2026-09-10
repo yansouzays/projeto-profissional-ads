@@ -30,7 +30,8 @@ def registrarClientes(clientes: list):
     client = {
         "nome": nome,
         "telefone": telefone,
-        "cpf": cpf
+        "cpf": cpf,
+        "historico" : []
     }
     clientes.append(client)
     print("\nCliente cadastrado com sucesso!")

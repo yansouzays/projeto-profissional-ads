@@ -34,5 +34,27 @@ def verificar_tel():
 
         print("TELEFONE INVÁLIDO! Digite exatamente os 11 números (DDD + NÚMERO)")
         
+def identificar(lista : list):
+    while True:
+        print("\n" + "-" * 50)
+        print("Digite [0] para voltar.")
+        print("-" * 50)
+        
+        busca = input("Digite o ID ou Nome: ")
+        if busca == '0':
+            return None
 
+        for objeto in lista:
+            if str(objeto['id']) == busca or objeto['nome'] == busca:
+                return objeto
+
+
+        print("ERROR! Informação inválida.")
+
+def gerar_id(lista : list):
+    novo_id = 0
+    for id in lista:
+        if id['id'] >= novo_id:
+            novo_id = id['id'] + 1
+    return novo_id
 

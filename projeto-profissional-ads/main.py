@@ -2,6 +2,7 @@ from sistema_clientes import registrarClientes, RegistrarEquipamentos, exibir_cl
 from sistema_ordens_de_serviço import abrir_OSs, mostrar_os, orcamento_Os, aprovar_Os, finalizar_Os
 from sistema_estoque_add import gerenciar_estoque_manual, cadastrar_peca, listar_pecas, pesquisar_peca, remover_peca, menu_estoque
 from submenu_os import submenu_ordens
+from tecnicos import submenu_tecnicos
 
 from collections import deque
 import os
@@ -84,14 +85,12 @@ estoque = [
 
 clientes = [
     {
-    "id_cliente" : 1,
     "nome" : "Alanzoka Silva Batista",
     "cpf" : "11122233344",
     "telefone": "74888899999",
     "historico": []
 },
 {
-    "id_cliente" : 1,
     "nome" : "TazerCraft Junior",
     "cpf" : "22233344455",
     "telefone": "74888889999",
@@ -99,34 +98,21 @@ clientes = [
 }
 ]
 
-equipamentos = [
-    {
-    'id' : 1,
-    'tipo' : "Notebook",
-    'marca' : "Dell",
-    'modelo' : "Inspiron 15",
-    'estado' : "Funcionando normalmente; Algumas marcas de uso"
-},
-    {
-    'id' : 2,
-    'tipo' : "Celular",
-    'marca' : "Samsung",
-    'modelo' : "A14",
-    'estado' : "Touch danificado"
-}
-]
-
 tecnicos = [{
     'id' : 2,
     'nome' : "Orretadinha",
     'telefone' : '4002-8922',
-    'os_aberto' : 0
+    'os_aberto' : 0,
+    'os_finalizada' : 0,
+    'historico' : []
 },
 {   
     'id' : 1,
     'nome' : "Olokinho",
     'telefone' : '4002-8922',
-    'os_aberto' : 0
+    'os_aberto' : 0,
+    'os_finalizada' : 0,
+    'historico' : []
 }]
 
 ### MENU PRINCIPAL ###
@@ -138,9 +124,8 @@ def main():
         print("       SISTEMA PARA ASSISTÊNCIA TÉCNINCA")
         print("=" * 50)
 
-        print("""[1] - SETOR CLIENTES -
-[2] - ESTOQUE -
-[3] - ORDENS DE SERVIÇOS -
+        print("""[1] - SETOR CLIENTES - - - [2] - ESTOQUE 
+[3] - ORDENS DE SERVIÇOS - - - [4] - TÉCNICOS
 
 [0] FECHAR """)
         opcao = input("Digite o número conforme as opções acima: ")
@@ -152,6 +137,8 @@ def main():
                 menu_estoque(estoque)
             case '3':
                 submenu_ordens(fila_orcamento, fila_aprovacao, fila_execucao, finalizados, tecnicos, clientes, estoque, proximo_id)
+            case '4':
+                submenu_tecnicos(tecnicos, finalizados)
             case '0':
                 break
             case _:

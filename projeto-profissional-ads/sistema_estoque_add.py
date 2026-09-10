@@ -1,4 +1,5 @@
 import os
+from funcoes_coringas import gerar_id
 
 estoque = [
     {
@@ -119,11 +120,7 @@ def gerenciar_estoque_manual(estoque : list):
 def cadastrar_peca(estoque: list):
     print("\n------- cadastrar peça / equipamento -------")
 
-    try:
-        id_peca = int(input(" informe o ID da peça: "))
-    except ValueError:
-        print("Erro: o ID deve ser um número inteiro!")
-        return
+    id_peca = gerar_id(estoque)
     
     for item in estoque:
         if item['id'] == id_peca:
