@@ -1,4 +1,4 @@
-from sistema_clientes import registrarClientes, RegistrarEquipamentos, exibir_cliente, pesquisar_cliente, excluir_cliente, menu_clientes
+from sistema_clientes import registrarClientes, RegistrarEquipamentos, exibir_cliente, pesquisar_cliente, excluir_cliente, menu_clientes, adicionar_historico 
 from sistema_ordens_de_serviço import abrir_OSs, mostrar_os, orcamento_Os, aprovar_Os, finalizar_Os
 from sistema_estoque_add import gerenciar_estoque_manual, cadastrar_peca, listar_pecas, pesquisar_peca, remover_peca, menu_estoque
 from submenu_os import submenu_ordens

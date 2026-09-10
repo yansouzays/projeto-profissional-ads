@@ -68,6 +68,7 @@ def pesquisar_cliente(clientes):
             print(f"Nome: {cliente['nome']}")
             print(f"Telefone: {cliente['telefone']}")
             print(f"CPF: {cliente['cpf']}")
+            print(f"historico: {cliente['historico']}")
             break
     if not achou:
         print("Cliente não encontrado!")
@@ -104,6 +105,7 @@ def menu_clientes(clientes: list):
 
         print("""[1] REGISTRAR CLIENTE - - - [2] EXIBIR CLIENTES
 [3] PESQUISAR CLIENTE - - - [4] REMOVER CLIENTES
+[5] ADICIONAR HISTÓRICO
 
 [0] VOLTAR""")
 
@@ -119,8 +121,31 @@ def menu_clientes(clientes: list):
                 pesquisar_cliente(clientes)
             case 4:
                 excluir_cliente(clientes)
+            case 5:
+                adicionar_historico(clientes)
             case 0:
                 os.system('cls')
                 return
             case _:
                 print("ERROR! Digite uma opção entre 0 e 4.")
+
+def adicionar_historico(clientes: list):
+    print("\n" + "=" * 50)
+    print("       ADICIONAR HISTÓRICO AO CLIENTE")
+    print("=" * 50)
+
+    cpf = input("Digite o CPF do cliente: ").strip()
+
+    for cliente in clientes:
+        if cliente["cpf"] == cpf:
+            print(f"\nCliente {cliente["nome"]} encontrado!\n")
+
+            historico = input("Digite uma descrição para o histórico: ").strip()
+
+            if historico:
+                cliente['historico'].append(historico)
+            else:
+                print("Nenhuma descrição foi adicionada.")
+            return
+        
+    print("\nNenhum cliente encontrado com o CPF informado!")
