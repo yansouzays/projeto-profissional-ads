@@ -35,7 +35,6 @@ def remover_tecnico(tecnicos : list):
         print(f"NOME: {tecnico['nome']} - - - TELEFONE: {tecnico['tel']}")
         print(f"OS EM ABERTO: {tecnico['os_aberto']}")
 
-def ordens_por_tecnicos(tecnicos : list):
     print("\n" + "-" * 50)
     print("              ORDENS DE SERVIÇO POR TÉCNICOS")
     print("-" * 50)
@@ -54,6 +53,10 @@ def historico_os (tecnicos : list, finalizadas : list):
     if not tecnico:
         return
 
+    print("=" * 50)
+    print("             TÉCNICO ENCONTRADO")
+    print(f"                {tecnico['nome']}")
+    print("=" * 50)
     if len(tecnico['historico']) == 0:
         print("TÉCNICO NÃO POSSUI ORDENS FINALIZADAS.")
         return
@@ -85,8 +88,7 @@ def submenu_tecnicos(tecnicos : list, finalizados : list):
         print("=" * 50)
 
         print("""[1] - REGISTRAR TÉCNICO - - - [2] - REMOVER TÉCNICO
-[3] - ORDENS POR TÉCNICOS - - - [4] - HISTÓRICO
-[5] - EXIBIR TÉCNICOS
+[3] - HISTÓRICO - - - [4] - EXIBIR TÉCNICOS
 
 [0] VOLTAR """)
 
@@ -98,10 +100,8 @@ def submenu_tecnicos(tecnicos : list, finalizados : list):
             case '2':
                 remover_tecnico(tecnicos)
             case '3':
-                ordens_por_tecnicos(tecnicos)
-            case '4':
                 historico_os(tecnicos, finalizados)
-            case '5':
+            case '4':
                 exibir_tecnicos(tecnicos)
             case '0':
                 time.sleep(0.5)

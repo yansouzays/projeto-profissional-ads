@@ -15,25 +15,22 @@ def submenu_ordens(orcamento, aprovacao, execucao, finalizados, tecnicos, client
 
 [0] SAIR""")
 
-        try:
-            opcao = int(input("OPÇÃO DESEJADA: "))
-        except ValueError:
-            print("ERROR! Digite uma opção válida")
+        opcao = input("OPÇÃO DESEJADA: ")
 
         match opcao:
-            case 1:
+            case '1':
                 id_os = abrir_OSs(orcamento, clientes, id_os)
-            case 2:
+            case '2':
                 orcamento_Os(orcamento, aprovacao, estoque)
-            case 3: 
+            case '3': 
                 aprovar_Os(aprovacao, execucao, finalizados, tecnicos, estoque)
-            case 4: 
+            case '4': 
                 finalizar_Os(execucao, finalizados, clientes, tecnicos)
-            case 5: 
+            case '5': 
                 filtrar_ordem(orcamento, aprovacao, execucao, finalizados)
-            case 6:
+            case '6':
                 buscar_os(orcamento, aprovacao, execucao, finalizados)
-            case 0:
+            case '0':
                 os.system('cls')
                 return
             case _:

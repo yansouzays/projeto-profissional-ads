@@ -1,5 +1,6 @@
 import os
 from funcoes_coringas import verificar_cpf, verificar_tel
+from sistema_ordens_de_serviço import mostrar_os
 
 
 def registrarClientes(clientes: list):
@@ -51,7 +52,7 @@ def exibir_cliente(clientes):
             print(f"CPF: {cliente['cpf']}")
             print("-" * 25)
 
-def pesquisar_cliente(clientes):
+def pesquisar_cliente(clientes, finalizados):
     print("\n" + "=" * 50)
     print("       PESQUISAR CLIENTES")
     print("=" * 50)
@@ -59,6 +60,10 @@ def pesquisar_cliente(clientes):
     cpf_cliente = verificar_cpf()
     if not cpf_cliente:
         return
+
+    print("=" * 50)
+    print("             CLIENTE ENCONTRADO")
+    print("=" * 50)
 
     achou = False
     for cliente in clientes:
@@ -68,10 +73,20 @@ def pesquisar_cliente(clientes):
             print(f"Nome: {cliente['nome']}")
             print(f"Telefone: {cliente['telefone']}")
             print(f"CPF: {cliente['cpf']}")
-            print(f"historico: {cliente['historico']}")
+
+            if cliente['historico'] == 0:
+                print("Cliente não tem histórico registrado.")
+            else:
+                for id_os in cliente['historico']:
+                    for oss in finalizados:
+                        if oss['id'] == id_os:
+                            mostrar_os(oss)
             break
     if not achou:
         print("Cliente não encontrado!")
+
+    sair = input("APERTE ENTER PARA VOLTAR.")
+    os.system('cls')
 
 def excluir_cliente(clientes):
     cpf_cliente = verificar_cpf()
@@ -88,64 +103,31 @@ def excluir_cliente(clientes):
     if not removido:
         print("Não há nenhum cliente cadastrado com esse CPF!")
 
-def RegistrarEquipamentos(equipamentos: list):
-    equipamento = input("Digite o nome do equipamento: ")
-    quantidade = input("Digite a quantidade disponivel desse equipamento: ")
-    equip = {
-        "equipamento": equipamento,
-        "quantidade": quantidade 
-    }
-    equipamentos.append(equip)
-
-def menu_clientes(clientes: list):
+def menu_clientes(clientes: list, finalizados):
     while True:
         print("\n" + "=" * 50)
-        print("           SETOR CLIENTES")
+        print("              SETOR CLIENTES")
         print("=" * 50)
 
         print("""[1] REGISTRAR CLIENTE - - - [2] EXIBIR CLIENTES
 [3] PESQUISAR CLIENTE - - - [4] REMOVER CLIENTES
-[5] ADICIONAR HISTÓRICO
 
 [0] VOLTAR""")
+        opcao_clientes = input("Digite a opção: ")
 
-        opcao_clientes = int(input("Digite a opção: "))
 
         match opcao_clientes:
 
-            case 1:
+            case '1':
                 registrarClientes(clientes)
-            case 2:
+            case '2':
                 exibir_cliente(clientes)
-            case 3:
-                pesquisar_cliente(clientes)
-            case 4:
+            case '3':
+                pesquisar_cliente(clientes, finalizados)
+            case '4':
                 excluir_cliente(clientes)
-            case 5:
-                adicionar_historico(clientes)
-            case 0:
+            case '0':
                 os.system('cls')
                 return
             case _:
                 print("ERROR! Digite uma opção entre 0 e 4.")
-
-def adicionar_historico(clientes: list):
-    print("\n" + "=" * 50)
-    print("       ADICIONAR HISTÓRICO AO CLIENTE")
-    print("=" * 50)
-
-    cpf = input("Digite o CPF do cliente: ").strip()
-
-    for cliente in clientes:
-        if cliente["cpf"] == cpf:
-            print(f"\nCliente {cliente["nome"]} encontrado!\n")
-
-            historico = input("Digite uma descrição para o histórico: ").strip()
-
-            if historico:
-                cliente['historico'].append(historico)
-            else:
-                print("Nenhuma descrição foi adicionada.")
-            return
-        
-    print("\nNenhum cliente encontrado com o CPF informado!")

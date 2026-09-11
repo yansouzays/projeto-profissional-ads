@@ -1,4 +1,5 @@
 import os
+import time
 from funcoes_coringas import gerar_id
 
 estoque = [
@@ -74,9 +75,9 @@ def gerenciar_estoque_manual(estoque : list):
     print("\n ---- GERENCIAMENTO DE ESTOQUE ----")
 
     try:
-        id_peca = int(input("informe o ID da peça: "))
+        id_peca = int(input("INFORME O ID DA PEÇA: "))
     except ValueError:
-        print ("Erro: o ID deve ser um numero inteiro!")
+        print ("ERRO: o ID deve ser um numero inteiro!")
         return
 
     peca_encontrada = None
@@ -86,39 +87,45 @@ def gerenciar_estoque_manual(estoque : list):
             break
 
     if peca_encontrada is None:
-        print ("Erro: peça não encontrada no estoque!")
+        print ("ERRO: peça não encontrada no estoque!")
         return
 
-    print(f"Peça selecionada: {peca_encontrada['nome']}")
-    print(f"Quantidade em estoque:{peca_encontrada['quantidade']}")
+    print(f"PEÇA SELECIONADA: {peca_encontrada['nome']}")
+    print(f"QUANTIDADE EM ESTOQUE:{peca_encontrada['quantidade']}")
 
     operacao = input("Deseja (A)dicionar ou (R)emover peças?").strip().upper()
 
     if operacao not in [ 'A', 'R']:
-        print(" opção inválida!")
+        print("OPÇÃO INVÁLIDA!")
         return
 
     try:
-        quantidade = int(input("informe a quantidade:"))
+        quantidade = int(input("INFORME A QUANTIDADE: "))
         if quantidade <= 0:
-            print(" A quantidadde deve ser maior que zero!")
+            print("ERROR! A quantidadde deve ser maior que zero!")
             return
     except ValueError:
-        print("entrada inválida. Digite apenas numeros inteiros.")
+        print("ENTRADA INVÁLIDA! Digite apenas numeros inteiros.")
         return
 
     if operacao == 'A':
         peca_encontrada['quantidade'] += quantidade
-        print(f"Adicionadas {quantidade} unidades. Novo saldo de '{peca_encontrada['nome']}': {peca_encontrada['quantidade']}")
+        print(f"ADICIONADAS {quantidade} UNIDADES. NOVO SALDO DE '{peca_encontrada['nome']}': {peca_encontrada['quantidade']}")
     elif operacao =='R':
         if quantidade > peca_encontrada['quantidade']:
             print (f"Erro: Saldo insuficiente em estoque! Saldo atual: {peca_encontrada['quantidade']}")
+            time.sleep(1)
+            os.system('cls')
             return
         peca_encontrada['quantidade']-= quantidade
-        print(f"removidas{quantidade} unidades. Novo saldo de '{peca_encontrada['nome']}' : {peca_encontrada['quantidade']}")
+        print(f"REMOVIDAS{quantidade} UNIDADES. NOVO SALDO DE '{peca_encontrada['nome']}' : {peca_encontrada['quantidade']}")
+        time.sleep(1)
+        os.system('cls')
 
 def cadastrar_peca(estoque: list):
-    print("\n------- cadastrar peça / equipamento -------")
+    print("\n" + "=" * 50)
+    print("               CADASTRAR PEÇA")
+    print("=" * 50)
 
     id_peca = gerar_id(estoque)
     
@@ -127,13 +134,13 @@ def cadastrar_peca(estoque: list):
             print("Erro: já existe uma peça com esse ID!")
             return
 
-    nome = input("Informe o nome da peça: ").strip().upper()
-    categoria = input(" Informe a categoria (ex: BATERIA, FLEX, TELA): "). strip().upper()
-    estado = input("Informe o estado (novo/usado): ").strip().lower()
+    nome = input("INFORME O NOME DA PEÇA: ").strip().upper()
+    categoria = input("INFORME A CATEGORIA (ex: BATERIA, FLEX, TELA): "). strip().upper()
+    estado = input("INFORME O ESTADO (NOVO/USADO): ").strip().upper()
 
     try:
-        quantidade = int(input("Informe a Quabtidade inicial: "))
-        preco = float(input("Informe o Preço (R$): "))
+        quantidade = int(input("INFORME A QUANTIDADE INICIAL: "))
+        preco = float(input("INFORME O PREÇO (R$): "))
     except ValueError: 
         print("Erro: Digite valores válidos para quantidade e preço" )
         return
@@ -148,7 +155,9 @@ def cadastrar_peca(estoque: list):
     }
 
     estoque.append(nova_peca)
-    print (f"Peça '{nome}' cadastrada com SUCESSO!")
+    print (f"PEÇA '{nome}' CADASTRADA COM SUCESSO!")
+    time.sleep(1)
+    os.system('cls')
 
 def listar_pecas(estoque: list):
 
@@ -160,9 +169,15 @@ def listar_pecas(estoque: list):
     print("-" * 80)
     for item in estoque:
         print(f"{item['id']:<5}) | {item['nome']:<30} | {item['categoria']:<12} | {item['estado']:<8} | {item['quantidade']:<6} | R$ {item['preco']:<9.2f}")
+    sair = input("APERTE ENTER PARA SAIR: ")
+    time.sleep(1)
+    os.system('cls')
+    return
 
 def pesquisar_peca(estoque:list):
-    print ("\n------- PESQUISAR PEÇA / EQUIPAMENTO -------")
+    print("\n" + "=" * 50)
+    print("               PESQUISAR PEÇA")
+    print("=" * 50)
     termo = input("Informe o ID ou nome para buscar: ").strip().upper()
 
     encontradas = []
@@ -175,16 +190,25 @@ def pesquisar_peca(estoque:list):
         print(f"{'ID':<5} | {"Nome":<30} | {'Categoria' :<12} | {'estado' :<8} | {'Quandidade':<6} | {'Preço(R$)':<10}")
         print ("-" * 80)
         for item in encontradas:
-             print(f"{item['id']:<5}) | {item['nome']:<30} | {item['categoria']:<12} | {item['estado']:<8} | {item['quantidade']:<6} | R$ {item['preco']:<9.2f}")
+            print(f"{item['id']:<5}) | {item['nome']:<30} | {item['categoria']:<12} | {item['estado']:<8} | {item['quantidade']:<6} | R$ {item['preco']:<9.2f}")
+            sair = input("APERTE ENTER PARA VOLTAR: ")
+            time.sleep(1)
+            os.system('cls')
+            return
 
     else:
         print("Nenhuma peça encontrada com esse termo.")
+        time.sleep(1)
+        os.system('cls')
+
 
 def remover_peca(estoque: list):
 
-    print ("\n------- REMOVER CADASTRO DE PEÇA -------")
+    print("\n" + "=" * 50)
+    print("               REMOVER PEÇA")
+    print("=" * 50)
     try:
-        id_peca = int(input("Informw o ID da peça a ser removido:"))
+        id_peca = int(input("INFORME O ID DA PEÇA A SER REMOVIDO: "))
     except ValueError:
         print("Erro: O ID deve ser um numero inteiro!")
         return
@@ -192,10 +216,12 @@ def remover_peca(estoque: list):
     for item in estoque:
         if item[item] == id_peca:
             estoque.remove(item)
-            print(f" '{item['id']}' (ID: {id_peca}) removida do cadastro com SUCESSO!")
+            print(f" '{item['id']}' (ID: {id_peca}) REMOVIDA DO CADASTRO COM SUCESSO!")
+            time.sleep(1)
+            os.system('cls')
             return
 
-    print(" Peça não encontrada no estoque.")
+    print("ERROR! Peça não encontrada no estoque.")
 
 def menu_estoque(estoque):
     while True:

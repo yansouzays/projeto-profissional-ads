@@ -76,7 +76,9 @@ def abrir_OSs (orcamentos : deque, clientes : list, proximo_id): #FUNÇÃO PARA 
 
     orcamentos.append(nova_os)
     print("\nORDEM DE SERVIÇO ABERTA COM SUCESSO!")
-    
+
+    time.sleep(1)
+    os.system('cls')
     proximo_id += 1
     return proximo_id
 
@@ -169,6 +171,9 @@ def orcamento_Os (orcamentos : deque, aprovacao : deque, estoque : list):
     }
     os_atual['status'] = "AGUARDANDO APROVAÇÃO"
     aprovacao.append(os_atual)
+    print("ORÇAMENTO ANEXADO!")
+    time.sleep(1)
+    os.system('cls')
 
 
 
@@ -208,12 +213,16 @@ def aprovar_Os (aprovacao : deque, exec : deque, final : list, tecnicos : list, 
 
             os_atual['status'] = "ORÇAMENTO ACEITO, INDO PARA MANUNTEÇÃO"
             exec.append(os_atual)
+            time.sleep(1)
+            os.system('cls')
             break
 
         elif aprovar == 'N':
             print("ORÇAMENTO NEGADO")
             os_atual['status'] = "ORÇAMENTO NEGADO"
             final.append(os_atual)
+            time.sleep(1)
+            os.system('cls')
             break
         else:
             print("OPÇÃO INVÁLIDA! Digite S para sim ou N para Não.")
@@ -246,11 +255,14 @@ def finalizar_Os (exec : deque, finalizados : list, clientes : list, tecnicos : 
 
         for cpf in clientes:
             if cpf['cpf'] == os_atual['cpf_cliente']:
-                cpf['historico'].append(os_atual)
+                cpf['historico'].append(os_atual['id'])
                 break
     else:
         print("ERROR! Escoha uma opção válida ( S ou N )")
         return
+    
+    time.sleep(1)
+    os.system('cls')
 
 def exibir_ordens(lista : deque, texto : str):
     print("\n" + "=" * 50)
