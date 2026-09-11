@@ -207,10 +207,15 @@ def remover_peca(estoque: list):
     print("\n" + "=" * 50)
     print("               REMOVER PEÇA")
     print("=" * 50)
+
+    print("DIGITE [0] E CONFIME PARA VOLTAR")
     try:
         id_peca = int(input("INFORME O ID DA PEÇA A SER REMOVIDO: "))
     except ValueError:
         print("Erro: O ID deve ser um numero inteiro!")
+        return
+
+    if id_peca == 0:
         return
 
     for item in estoque:
