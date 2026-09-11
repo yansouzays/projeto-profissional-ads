@@ -64,7 +64,7 @@ def historico_os (tecnicos : list, finalizadas : list):
 
 def exibir_tecnicos(tecnicos : list):
     print("\n" + "=" * 50)
-    print("       CLIENTES REGISTRADOS")
+    print("       TECNICOS REGISTRADOS")
     print("=" * 50)
 
     for tecnico in tecnicos:

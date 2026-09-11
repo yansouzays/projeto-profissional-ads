@@ -198,7 +198,7 @@ def pesquisar_peca(estoque:list):
         return
 
     else:
-        print("Nenhuma peça encontrada com esse termo.")
+        print("Nenhuma peça encontrada com esse termo...")
         time.sleep(1)
         os.system('cls')
 
