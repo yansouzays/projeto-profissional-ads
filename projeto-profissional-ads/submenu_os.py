@@ -11,7 +11,7 @@ def submenu_ordens(orcamento, aprovacao, execucao, finalizados, tecnicos, client
         print("=" * 50)
 
         print("""\n[1] - ABRIR OS - - - [2] - ORÇAMENTOS - - - [3] - APROVAR
-[4] - FINALIZAR OS - - - [5] ORDENS DE SERVIÇOS - - - [9] - BUSCAR ORDEM DE SERVIÇO
+[4] - FINALIZAR OS - - - [5] ORDENS DE SERVIÇOS - - - [6] - BUSCAR ORDEM DE SERVIÇO
 
 [0] SAIR""")
 
@@ -32,9 +32,9 @@ def submenu_ordens(orcamento, aprovacao, execucao, finalizados, tecnicos, client
                 buscar_os(orcamento, aprovacao, execucao, finalizados)
             case '0':
                 os.system('cls')
-                return
+                return id_os
             case _:
-                print("ERROR! Digite um número entre 0 e 9.")
+                print("ERROR! Digite um número entre 0 e 6.")
 
 
 

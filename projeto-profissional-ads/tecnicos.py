@@ -26,16 +26,12 @@ def cadastrar_tecnico(tecnicos : list):
         'historico' : []
     })
 
-def remover_tecnico(tecnicos : list):
-    buscar = identificar(tecnicos)
-    if not buscar:
+def remover_tecnico(tecnicos: list):
+    tecnico = identificar(tecnicos)
+    if not tecnico:
         return
-
-    for tecnico in buscar:
-        print(f"NOME: {tecnico['nome']} - - - TELEFONE: {tecnico['tel']}")
-        print(f"OS EM ABERTO: {tecnico['os_aberto']}")
-
-    print("\n" + "-" * 50)
+    tecnicos.remove(tecnico)
+    print(f"Técnico '{tecnico['nome']}' removido com sucesso!")
     print("              ORDENS DE SERVIÇO POR TÉCNICOS")
     print("-" * 50)
 
@@ -61,9 +57,9 @@ def historico_os (tecnicos : list, finalizadas : list):
         print("TÉCNICO NÃO POSSUI ORDENS FINALIZADAS.")
         return
     for id_os in tecnico['historico']:
-        for os in finalizadas:
-            if os['id'] == id_os:
-                print(mostrar_os(os))
+        for ordem in finalizadas:
+            if ordem['id'] == id_os:
+                mostrar_os(ordem)
     return
 
 def exibir_tecnicos(tecnicos : list):

@@ -259,13 +259,13 @@ def main():
             case '2':
                 menu_estoque(estoque)
             case '3':
-                submenu_ordens(fila_orcamento, fila_aprovacao, fila_execucao, finalizados, tecnicos, clientes, estoque, proximo_id)
+                proximo_id = submenu_ordens(fila_orcamento, fila_aprovacao, fila_execucao, finalizados, tecnicos, clientes, estoque, proximo_id)
             case '4':
                 submenu_tecnicos(tecnicos, finalizados)
             case '0':
                 break
             case _:
-                print("ERROR! Digite um número de 0 e 3.")
+                print("ERROR! Digite um número de 0 e 4.")
 
 if __name__ == "__main__":
     main()

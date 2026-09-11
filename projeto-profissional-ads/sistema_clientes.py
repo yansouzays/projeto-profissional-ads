@@ -74,7 +74,7 @@ def pesquisar_cliente(clientes, finalizados):
             print(f"Telefone: {cliente['telefone']}")
             print(f"CPF: {cliente['cpf']}")
 
-            if cliente['historico'] == 0:
+            if not cliente['historico']:
                 print("Cliente não tem histórico registrado.")
             else:
                 for id_os in cliente['historico']:

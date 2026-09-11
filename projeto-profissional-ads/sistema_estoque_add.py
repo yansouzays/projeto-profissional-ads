@@ -187,14 +187,15 @@ def pesquisar_peca(estoque:list):
 
     if encontradas:
         print(f"\nResultado(s) encontrado(s):")
-        print(f"{'ID':<5} | {"Nome":<30} | {'Categoria' :<12} | {'estado' :<8} | {'Quandidade':<6} | {'Preço(R$)':<10}")
+        print(f"{'ID':<5} | {'Nome':<30} | {'Categoria' :<12} | {'estado' :<8} | {'Quandidade':<6} | {'Preço(R$)':<10}")
         print ("-" * 80)
         for item in encontradas:
             print(f"{item['id']:<5}) | {item['nome']:<30} | {item['categoria']:<12} | {item['estado']:<8} | {item['quantidade']:<6} | R$ {item['preco']:<9.2f}")
-            sair = input("APERTE ENTER PARA VOLTAR: ")
-            time.sleep(1)
-            os.system('cls')
-            return
+
+        sair = input("APERTE ENTER PARA VOLTAR: ")
+        time.sleep(1)
+        os.system('cls')
+        return
 
     else:
         print("Nenhuma peça encontrada com esse termo.")
@@ -219,7 +220,7 @@ def remover_peca(estoque: list):
         return
 
     for item in estoque:
-        if item[item] == id_peca:
+        if item['id'] == id_peca:
             estoque.remove(item)
             print(f" '{item['id']}' (ID: {id_peca}) REMOVIDA DO CADASTRO COM SUCESSO!")
             time.sleep(1)

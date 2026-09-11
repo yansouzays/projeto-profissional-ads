@@ -34,7 +34,7 @@ def abrir_OSs (orcamentos : deque, clientes : list, proximo_id): #FUNÇÃO PARA 
 
     cpf_cliente = verificar_cpf()
     if not cpf_cliente:
-        return
+        return proximo_id
         
     encontrado = None
     for cliente in clientes:
@@ -156,11 +156,13 @@ def orcamento_Os (orcamentos : deque, aprovacao : deque, estoque : list):
             break
         else:
             print("OPÇÃO INVÁLIDA! Digite S para sim ou N para Não.")
-
-    try:
-        valor_mao_obra = float(input("VALOR DA MÃO DE OBRA: R$"))
-    except ValueError:
-        print("VALOR INVÁLIDO! Digite apenas números.")
+    while True:
+        try:
+            valor_mao_obra = float(input("VALOR DA MÃO DE OBRA: R$"))
+            break
+        except ValueError:
+            print("VALOR INVÁLIDO! Digite apenas números.")
+            continue
     valor_total += valor_mao_obra 
     os_atual['orcamento'] = {
         'peca_estoque' : pecas_estoque,
